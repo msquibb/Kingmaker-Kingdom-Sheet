@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingmaker-Kingdom-Sheet.Server", "Kingmaker-Kingdom-Sheet\Server\Kingmaker-Kingdom-Sheet.Server.csproj", "{C50FBB25-E455-4142-B490-5475CAC0E50A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingmaker-Kingdom-Sheet.Client", "Kingmaker-Kingdom-Sheet\Client\Kingmaker-Kingdom-Sheet.Client.csproj", "{3FAAE533-7018-494F-BDEE-96286A4BD954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kingmaker-Kingdom-Sheet.Shared", "Kingmaker-Kingdom-Sheet\Shared\Kingmaker-Kingdom-Sheet.Shared.csproj", "{F6A15BD6-9BD4-4FAE-A808-4D0440791BE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C50FBB25-E455-4142-B490-5475CAC0E50A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C50FBB25-E455-4142-B490-5475CAC0E50A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C50FBB25-E455-4142-B490-5475CAC0E50A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C50FBB25-E455-4142-B490-5475CAC0E50A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FAAE533-7018-494F-BDEE-96286A4BD954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FAAE533-7018-494F-BDEE-96286A4BD954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FAAE533-7018-494F-BDEE-96286A4BD954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FAAE533-7018-494F-BDEE-96286A4BD954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A15BD6-9BD4-4FAE-A808-4D0440791BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A15BD6-9BD4-4FAE-A808-4D0440791BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A15BD6-9BD4-4FAE-A808-4D0440791BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A15BD6-9BD4-4FAE-A808-4D0440791BE2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {02328B41-341D-4655-A464-3BEA4201EB84}
+	EndGlobalSection
+EndGlobal
