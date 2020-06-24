@@ -1,30 +1,246 @@
-﻿<h3>Kingdom Name</h3>
+﻿@page "/kingdom"
 
-<div class="card">
-    <div class="card-header">
-        Basic Information
-    </div>
-    <div class="card-body">
+@inject HttpClient Http
+
+@if (kingdom == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <h3>@kingdom.Name</h3>
+
+    <EditForm Model="@kingdom" OnValidSubmit="UpdateKingdom">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
         <div class="row">
-            <div class="col-2">
-                <label>Alignment</label>
-            </div>
-            <div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Alignment
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Good</a>
-                        <a class="dropdown-item" href="#">Neutral</a>
-                        <a class="dropdown-item" href="#">Evil</a>
+            <div class="col-12 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Basic Information
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2">
+                                <label>Alignment</label>
+                            </div>
+                            <div class="col-10">
+                                <InputSelect @bind-Value="kingdom.Alignment">
+                                    <option value="">Select alignment...</option>
+                                    <option value="LG">Lawful Good</option>
+                                    <option value="NG">Neutral Good</option>
+                                    <option value="CG">Chaotic Good</option>
+                                    <option value="LN">Lawful Neutral</option>
+                                    <option value="TN">True Neutral</option>
+                                    <option value="CN">Chaotic Neutral</option>
+                                    <option value="LE">Lawful Evil</option>
+                                    <option value="NE">Neutral Evil</option>
+                                    <option value="CE">Chaotic Evil</option>
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <label>Government Type</label>
+                            </div>
+                            <div class="col-10">
+                                <InputSelect @bind-Value="kingdom.Government">
+                                    <option value="">Select government type</option>
+                                    <option value="Autocracy">Autocracy</option>
+                                    <option value="Magocracy">Magocracy</option>
+                                    <option value="Oligarcy">Oligarcy</option>
+                                    <option value="Overlord">Overlord</option>
+                                    <option value="Republic">Republic</option>
+                                    <option value="SecretSyndicate">Secret Syndicate</option>
+                                    <option value="Theocracy">Theocracy</option>
+                                </InputSelect>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        <div class="row">
+            <div class="col-6 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Core Kingdom Attributes
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Economy</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.Economy</span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Loyalty</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.Loyalty</span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Stability</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.Stability</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Other Kingdom Attributes
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Consumption</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.Consumption</span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Income Modifier</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.IncomeModifier</span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Unrest</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.Unrest</span>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Unrest/Turn</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.UnrestPerTurn</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Reputation Points from Size
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Fame</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Fame
+                            </div>
+                            <div class="col-4">
+                                <label>Infamy</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Infamy
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Settlement Modifiers
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Corruption</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Corruption
+                            </div>
+                            <div class="col-4">
+                                <label>Lore</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Lore
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Crime</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Crime
+                            </div>
+                            <div class="col-4">
+                                <label>Productivity</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Productivity
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <label>Law</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Law
+                            </div>
+                            <div class="col-4">
+                                <label>Society</label>
+                            </div>
+                            <div class="col-2">
+                                @kingdom.Society
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+}
 
 @code {
+    private Kingmaker_Kingdom_Sheet.Shared.Models.Kingdom kingdom;
 
+    protected override async Task OnInitializedAsync()
+    {
+        kingdom = await Http.GetFromJsonAsync<Kingmaker_Kingdom_Sheet.Shared.Models.Kingdom>("KingdomInfo");
+    }
+
+    private async Task UpdateKingdom()
+    {
+        Console.WriteLine("Valid submission!");
+        var response = await Http.PostAsJsonAsync<Kingmaker_Kingdom_Sheet.Shared.Models.Kingdom>("KingdomInfo", kingdom);
+        Console.WriteLine("Posted model!");
+        kingdom = await response.Content.ReadFromJsonAsync<Kingmaker_Kingdom_Sheet.Shared.Models.Kingdom>();
+        Console.WriteLine("Received model back!");
+    }
 }
