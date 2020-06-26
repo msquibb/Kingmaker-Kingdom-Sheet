@@ -33,8 +33,10 @@ namespace KingmakerKingdomSheet.Server.Controllers
 				Consumption = 4,
 				IncomeModifier = 25,
 				Unrest = 0,
-				UnrestPerTurn = 0
+				UnrestPerTurn = 0,
+				UseHybridRules = true
 			};
+			kingdom.Edicts.UseRecruitment = false;
 			return kingdom;
 		}
 

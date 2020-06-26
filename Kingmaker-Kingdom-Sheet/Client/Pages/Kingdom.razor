@@ -71,6 +71,14 @@ else
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8">
+                                <label>Control DC</label>
+                            </div>
+                            <div>
+                                <span>@kingdom.ControlDC</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
                                 <label>Economy</label>
                             </div>
                             <div>
@@ -217,6 +225,123 @@ else
                             </div>
                             <div class="col-2">
                                 @kingdom.Society
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Edicts
+                    </div>
+                    <div class="card-body">
+
+                        <div class="card-columns">
+
+                            <div class="card">
+                                <div class="card-header">Holiday Edict</div>
+                                <div class="card-body">
+                                    <InputSelect id="selectHoliday" @bind-Value="kingdom.Edicts.Holiday">
+                                        <option value="">Select holiday edict level...</option>
+                                        <option value="None">None</option>
+                                        <option value="Annual">Annual</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Weekly">Weekly</option>
+                                    </InputSelect>
+                                </div>
+                            </div>
+                            @if (kingdom.UseHybridRules)
+                            {
+                                <div class="card">
+                                    <div class="card-header">Expansion Edict</div>
+                                    <div class="card-body">
+                                        <InputSelect @bind-Value="kingdom.Edicts.Expansion">
+                                            <option value="">Select Expansion edict level...</option>
+                                            <option value="Isolationist">Isolationist</option>
+                                            <option value="Cautious">Cautious</option>
+                                            <option value="Standard">Standard</option>
+                                            <option value="Aggressive">Aggressive</option>
+                                            <option value="Imperialistic">Imperialistic</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="card">
+                                    <div class="card-header">Promotion Edict</div>
+                                    <div class="card-body">
+                                        <InputSelect @bind-Value="kingdom.Edicts.Promotion">
+                                            <option value="">Select Promotion edict level...</option>
+                                            <option value="None">None</option>
+                                            <option value="Token">Token</option>
+                                            <option value="Standard">Standard</option>
+                                            <option value="Aggressive">Aggressive</option>
+                                            <option value="Expansionist">Expansionist</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+                            }
+                            <div class="card">
+                                <div class="card-header">Taxation Edict</div>
+                                <div class="card-body">
+                                    <InputSelect @bind-Value="kingdom.Edicts.Taxation">
+                                        <option value="">Select holiday edict level...</option>
+                                        <option value="None">None</option>
+                                        <option value="Annual">Annual</option>
+                                        <option value="Quarterly">Quarterly</option>
+                                        <option value="Monthly">Monthly</option>
+                                        <option value="Weekly">Weekly</option>
+                                    </InputSelect>
+                                </div>
+                            </div>
+                            @if (kingdom.Edicts.UseRecruitment)
+                            {
+                                <div class="card">
+                                    <div class="card-header">Recruitment Edict</div>
+                                    <div class="card-body">
+                                        <InputSelect @bind-Value="kingdom.Edicts.Recruitment">
+                                            <option value="">Select recruitment edict level...</option>
+                                            <option value="Pacifist">Pacifist</option>
+                                            <option value="Peaceful">Peaceful</option>
+                                            <option value="Normal">Normal</option>
+                                            <option value="Aggressive">Aggressive</option>
+                                            <option value="Warlike">Warlike</option>
+                                        </InputSelect>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-1">
+                <div class="card">
+                    <div class="card-header">
+                        Improvement Edict
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 p-1">
+                                New Settlements/Turn: X
+                            </div>
+                            <div class="col-6 p-1">
+                                New Buildings/Turn: XX
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 p-1">
+                                Terrain Improvements/Turn: X
+                            </div>
+                            <div class="col-6 p-1">
+                                Hex Claims/Turn: X
                             </div>
                         </div>
                     </div>

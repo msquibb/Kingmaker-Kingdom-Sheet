@@ -25,6 +25,8 @@ namespace Kingmaker_Kingdom_Sheet.Shared.Models
 		
 		public string Government { get; set; }
 
+		public int ControlDC { get; set; }
+
 		public int Economy { get; set; }
 		public int Loyalty { get; set; }
 		public int Stability { get; set; }
@@ -47,5 +49,6 @@ namespace Kingmaker_Kingdom_Sheet.Shared.Models
 
 		public Edicts Edicts { get; set; }
 
+		public bool UseHybridRules { get; set; }
 	}
 }
