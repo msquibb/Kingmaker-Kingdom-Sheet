@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "universe_allowlist": "all",
+  "capacity_min": 6,
+  "capacity_max": 25,
+  "selection_algorithm": "deterministic",
+  "overflow_strategy": ["diegetic_expansion", "thematic_promotion", "structural_mirroring"]
+}

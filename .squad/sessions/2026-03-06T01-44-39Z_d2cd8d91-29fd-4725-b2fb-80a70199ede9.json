@@ -1,0 +1,17 @@
+{
+  "id": "d2cd8d91-29fd-4725-b2fb-80a70199ede9",
+  "createdAt": "2026-03-06T01:44:02.847Z",
+  "lastActiveAt": "2026-03-06T01:45:22.661Z",
+  "messages": [
+    {
+      "role": "system",
+      "content": "⚠ No Squad team found. Run /init to create your team first.",
+      "timestamp": "2026-03-06T01:44:39.209Z"
+    },
+    {
+      "role": "system",
+      "content": "⚠ No Squad team found. Run /init to create your team first.",
+      "timestamp": "2026-03-06T01:45:12.530Z"
+    }
+  ]
+}

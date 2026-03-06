@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "assignments": [
+    {
+      "assignment_id": "kingmaker-initial-2026-03-06",
+      "timestamp": "2026-03-06T02:18:27Z",
+      "universe": "Firefly",
+      "agent_count": 4,
+      "project_shape": "full-stack web application with game mechanics",
+      "resonance_signals": ["collaborative", "web-based", "gaming"],
+      "agents": ["Mal", "Kaylee", "Wash", "Zoe"]
+    }
+  ]
+}
