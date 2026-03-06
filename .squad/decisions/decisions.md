@@ -120,6 +120,86 @@ Real-time (`realtime-hub`, `hex-sync`) can run parallel to hex rendering work.
 
 ---
 
+## 2026-03-06: Milestone Planning Decision
+
+**Owner**: Mal  
+**Date**: 2026-03-06  
+**Status**: ✅ Complete (Approved by Mike Squibb; milestones & issues created)
+
+### Summary
+
+Organized 22 implementation todos into **5 sequential milestones** (~12 weeks total) with full GitHub traceability.
+
+### Milestone Structure
+
+| Milestone | Duration | Key Deliverable | Story Points |
+|-----------|----------|-----------------|--------------|
+| **M1: Foundation** | 2–3 wks | .NET 10 scaffold with SQLite & Identity | 6 |
+| **M2: Core API & Frontend** | 3–4 wks | Backend APIs & login/register | 8 |
+| **M3: Kingdom & Hex Maps** | 4–5 wks | Interactive hex grid with fog of war | 8 |
+| **M4: Real-Time & Players** | 3–4 wks | Multi-user collaboration, player roles | 5 |
+| **M5: Polish & Testing** | 2–3 wks | Responsive design, comprehensive tests | 6 |
+
+### Critical Path
+
+```
+aspire-setup → solution-structure → api-project → 
+blazor-project → kingdom-detail → hex-grid-component → 
+hex-interaction → hex-sync → role-actions
+```
+
+### Key Risks
+
+- **Identity multi-GM complexity** (Medium) → Pair Wash + Mike on setup
+- **Blazor Auto debugging** (Medium) → Assign to Kaylee, server-mode fallback
+- **SVG hex coordinates** (Low–Medium) → Team spike if needed
+- **SignalR + Blazor** (Medium) → Early testing in M2
+
+### Team Assignments
+
+- **Wash**: Backend infrastructure (Aspire, SQLite, APIs, SignalR)
+- **Kaylee**: UI & components (Blazor, auth, kingdom views, hex grid)
+- **Zoe**: Testing strategy & integration tests
+- **Mal**: Architecture, code review, decisions
+
+---
+
+## 2026-03-06: GitHub Milestones and Issues Created
+
+**Date**: 2026-03-06  
+**Decided by**: Mal (Lead)  
+**Approved by**: Mike Squibb  
+**Status**: ✅ Complete
+
+### Summary
+
+All 5 milestones and 17 user-facing GitHub issues created in `msquibb/Kingmaker-Kingdom-Sheet`. Issues assigned to squad members with labels and clear acceptance criteria.
+
+### Milestones Created
+
+- **M1: Foundation (Weeks 1–2)** — Project scaffold, SQLite, Identity
+- **M2: Core API & Frontend (Weeks 3–5)** — APIs, Blazor, auth UI
+- **M3: Kingdom & Hex Maps (Weeks 6–8)** — Dashboard, hex grid, claiming
+- **M4: Real-Time & Players (Weeks 9–10)** — SignalR, player views, permissions
+- **M5: Polish (Weeks 11–12)** — Responsive design, error handling, docs, tests
+
+### Issues by Milestone
+
+- **M1**: #2 (Aspire), #3 (SQLite), #4 (Identity), #5 (Blazor Web App)
+- **M2**: #6 (Kingdom API), #7 (Component lib), #8 (Auth UI)
+- **M3**: #9 (Kingdom dashboard), #10 (Hex grid), #11 (Hex claiming)
+- **M4**: #12 (SignalR), #13 (Player dashboard), #14 (Permissions)
+- **M5**: #15 (Responsive), #16 (Error handling), #17 (Docs), #18 (Performance)
+
+### Rationale
+
+- **GitHub traceability**: Each issue is self-contained, actionable, and links to PRs
+- **Team clarity**: Squad labels route work to specialists (Wash=backend, Kaylee=UI, Zoe=testing, Mal=orchestration)
+- **Scope visibility**: 17 user-facing issues + internal scaffolding; milestone grouping for progress tracking
+- **Dependency clarity**: Critical path mapped; blockers visible
+
+---
+
 ## 2026-03-06: User Directive — Project Organization
 
 **Author**: Mike Squibb (via Copilot)  
