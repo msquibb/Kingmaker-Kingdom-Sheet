@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+# Squad: ignore generated logs
+.squad/orchestration-log/
+.squad/log/
