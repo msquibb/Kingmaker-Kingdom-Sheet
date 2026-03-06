@@ -27,3 +27,9 @@
 - **Description:** Pathfinder 2 Kingmaker kingdom management tool for GMs and players. Features hex grid map with fog of war, kingdom stats tracking, role-based access control, and real-time updates.
 - **User:** Mike Squibb
 - **Created:** 2026-03-06
+
+## Issue Source
+
+**Repository:** msquibb/Kingmaker-Kingdom-Sheet  
+**Connected:** 2026-03-06  
+**Filters:** All open issues
