@@ -7,6 +7,7 @@ How to decide who handles what.
 | Work Type | Route To | Examples |
 |-----------|----------|----------|
 | Architecture, tech decisions | Mal | Solution design, framework choices, project structure |
+| Design, UX, visual direction | Mike Squibb | Color schemes, layout design, visual hierarchy, user flows |
 | Blazor UI, components, hex grid | Kaylee | Frontend components, SVG rendering, client interactions |
 | APIs, database, SignalR | Wash | Backend services, EF Core, real-time hubs |
 | Tests, quality, edge cases | Zoe | Unit tests, integration tests, test strategy |

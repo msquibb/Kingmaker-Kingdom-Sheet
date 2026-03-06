@@ -16,6 +16,7 @@
 | Kaylee ⚛️ | Frontend Dev | `.squad/agents/kaylee/charter.md` | Active |
 | Wash 🔧 | Backend Dev | `.squad/agents/wash/charter.md` | Active |
 | Zoe 🧪 | Tester | `.squad/agents/zoe/charter.md` | Active |
+| Mike Squibb 👤 | Lead Designer | — (human) | Active |
 | Scribe 📋 | Session Logger | `.squad/agents/scribe/charter.md` | Active |
 | Ralph 🔄 | Work Monitor | — | Active |
 
