@@ -61,4 +61,45 @@
 
 ## Learnings
 
-*Will be filled as backend services are built*
+### Aspire Setup — Issue #2 (2026-03-07)
+
+**What was built**:
+- Complete .NET Aspire 13 solution with 5 projects in `dotnet10/` folder
+- AppHost for orchestration with service discovery and health checks
+- ServiceDefaults with OpenTelemetry, resilience, and standardized middleware
+- ApiService (ASP.NET Core Web API) with `/weatherforecast` sample endpoint
+- Web (Blazor Web App with Auto render mode) consuming the API
+- Shared library for contracts, DTOs, and domain models
+
+**Architecture decisions**:
+- Used `aspire-starter` template as foundation — provides battle-tested structure
+- Shared project pattern for type safety across API and Blazor frontend
+- Health checks at `/health` (readiness) and `/alive` (liveness) endpoints
+- Web project configured with `WaitFor(apiService)` to ensure API is healthy first
+- HTTP health checks in AppHost for both services at `/health` paths
+
+**Key files**:
+- `dotnet10/KingmakerKingdomSheet.AppHost/AppHost.cs` — Service topology definition
+- `dotnet10/KingmakerKingdomSheet.ServiceDefaults/Extensions.cs` — Shared config, telemetry, resilience
+- `dotnet10/KingmakerKingdomSheet.ApiService/Program.cs` — API entry point
+- `dotnet10/KingmakerKingdomSheet.Web/Program.cs` — Blazor entry point
+- `dotnet10/KingmakerKingdomSheet.Shared/` — Shared contracts (empty, ready for models)
+- `dotnet10/README.md` — Complete documentation of the solution structure
+
+**User preferences**:
+- All .NET projects MUST be in `dotnet10/` folder (explicit user directive)
+- Use Aspire 13 for orchestration (latest stable version)
+- Prefer .NET templates over manual project creation for consistency
+
+**Next steps**:
+- Issue #3: Add EF Core with SQLite database
+- Issue #4: Configure ASP.NET Core Identity with GM/Player roles
+- Database will be added to AppHost as a resource once configured
+
+**Commands to verify**:
+```bash
+cd dotnet10
+dotnet build KingmakerKingdomSheet.sln  # Should build cleanly
+cd KingmakerKingdomSheet.AppHost
+dotnet run  # Launches Aspire Dashboard at https://localhost:17129
+```
