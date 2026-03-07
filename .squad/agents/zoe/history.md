@@ -41,6 +41,14 @@
 - Multi-GM edge case validation — critical path for identity-setup (#4) and hex-sync (#12)
 - Edge cases: boundary conditions (hex grid limits), error scenarios (permission failures)
 
+## Architecture Decisions Affecting Zoe
+
+**Aspire Architecture Pattern** (Wash, 2026-03-07):
+- All services must integrate with ServiceDefaults for telemetry and health checks
+- Test infrastructure should leverage Aspire's OpenTelemetry for observability
+- Health check endpoints are standard: `/health` (detailed), `/alive` (liveness)
+- Integration tests should validate WaitFor() dependency ordering
+
 ## Learnings
 
 *Will be filled as tests are written*
