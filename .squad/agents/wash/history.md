@@ -59,9 +59,36 @@
 - #16: Add comprehensive error handling and user feedback (M5, shared with Kaylee)
 - #18: Performance optimization and test coverage review (M5, shared with Zoe)
 
-## Learnings
+## Recent Updates
 
-### Aspire Setup — Issue #2 (2026-03-07)
+### 2026-03-13: Backend Application Scaffold Complete
+
+**What was accomplished**:
+- Scaffolded `dotnet10\KingmakerKingdomSheet.Domain` for core entity models
+- Scaffolded `dotnet10\KingmakerKingdomSheet.Application` for service contracts and preview implementations
+- Kept both layers free of EF Core to enable database-first workflow
+- Registered preview services in ApiService so it compiles while awaiting Book's schema
+
+**Architecture established**:
+- Domain layer: pure POCO entities, value objects, enums
+- Application layer: service contracts (IKingdomCatalogService), preview in-memory implementations
+- Shared layer: DTOs and API request/response models
+- No persistence yet (deferred to DbContext after Book delivers schema)
+
+**Next Action**:
+- After Book delivers SQL Database project and schema, Wash will:
+  1. Set up DbContext in ApiService to map to Book's schema
+  2. Update AppHost with SQLite resource binding
+  3. Replace preview services with real DbContext-backed implementations
+
+**Integration Status**:
+- Solution builds cleanly with 7 projects (AppHost, ServiceDefaults, ApiService, Web, Shared, Domain, Application)
+- Ready for DbContext integration
+
+### Earlier Updates
+📌 **2026-03-07**: Aspire Setup — Issue #2 (5-project structure complete)
+📌 **2026-03-06**: Milestone planning and GitHub issues created
+
 
 **What was built**:
 - Complete .NET Aspire 13 solution with 5 projects in `dotnet10/` folder
@@ -103,3 +130,25 @@ dotnet build KingmakerKingdomSheet.sln  # Should build cleanly
 cd KingmakerKingdomSheet.AppHost
 dotnet run  # Launches Aspire Dashboard at https://localhost:17129
 ```
+
+### Backend Scaffold Before SQL Integration (2026-03-13)
+
+**What was built**:
+- Added `dotnet10\KingmakerKingdomSheet.Domain` for backend entities, enums, and value objects
+- Added `dotnet10\KingmakerKingdomSheet.Application` for kingdom service contracts and preview registrations
+- Kept `KingmakerKingdomSheet.Shared` focused on DTOs and request models rather than backend entities
+
+**Backend patterns**:
+- When Book owns the SQL-first database project, scaffold domain/application layers first and avoid creating persistence projects in parallel
+- Register preview/in-memory application services so ApiService can compose cleanly before DbContext work begins
+- Keep Domain free of EF Core and UI concerns; let Shared carry API-facing DTOs
+
+**Key file paths**:
+- `dotnet10\KingmakerKingdomSheet.Domain\Entities\Kingdom.cs`
+- `dotnet10\KingmakerKingdomSheet.Application\Contracts\IKingdomCatalogService.cs`
+- `dotnet10\KingmakerKingdomSheet.Application\Services\PreviewKingdomCatalogService.cs`
+- `dotnet10\KingmakerKingdomSheet.Shared\DTOs\KingdomDetailsDto.cs`
+
+**User preferences**:
+- Preserve the existing Aspire solution shape and naming conventions while extending it
+- Do not use EF Core migrations; prepare safe scaffolding that can absorb SQL-first schema work later

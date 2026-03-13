@@ -10,6 +10,7 @@ How to decide who handles what.
 | Design, UX, visual direction | Mike Squibb | Color schemes, layout design, visual hierarchy, user flows |
 | Blazor UI, components, hex grid | Kaylee | Frontend components, SVG rendering, client interactions |
 | APIs, database, SignalR | Wash | Backend services, EF Core, real-time hubs |
+| SQL schema, database design | Book | Database schema, SQL projects, table design, relationships |
 | Tests, quality, edge cases | Zoe | Unit tests, integration tests, test strategy |
 | Code review | Mal | Review PRs, check quality, suggest improvements |
 | Scope & priorities | Mal | What to build next, trade-offs, decisions |
