@@ -13,4 +13,8 @@
     <ProjectReference Include="..\KingmakerKingdomSheet.Web\KingmakerKingdomSheet.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Sqlite" Version="13.1.2-beta.518" />
+  </ItemGroup>
+
 </Project>

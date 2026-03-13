@@ -9,10 +9,12 @@
   <ItemGroup>
     <ProjectReference Include="..\KingmakerKingdomSheet.ServiceDefaults\KingmakerKingdomSheet.ServiceDefaults.csproj" />
     <ProjectReference Include="..\KingmakerKingdomSheet.Shared\KingmakerKingdomSheet.Shared.csproj" />
+    <ProjectReference Include="..\KingmakerKingdomSheet.Application\KingmakerKingdomSheet.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
   </ItemGroup>
 
 </Project>

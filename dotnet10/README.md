@@ -11,6 +11,7 @@ This is the complete .NET 10 solution for the Kingmaker Kingdom Sheet applicatio
 - **Role**: Defines the application topology and service dependencies
 - **Key Features**:
   - Service discovery and registration
+  - SQLite development database resource for backend startup
   - Health check monitoring
   - Dependency management (API → Web)
   - Aspire Dashboard integration
@@ -34,7 +35,9 @@ This starts the Aspire Dashboard where you can monitor all services, logs, trace
 - **Purpose**: ASP.NET Core Web API
 - **Responsibilities**:
   - REST endpoints for kingdoms, hexes, towns, users
-  - Entity Framework Core data access
+  - Hand-written EF Core DbContext aligned to the SQL-first schema
+  - SQLite development schema initialization without EF migrations
+  - `/database/status` verification endpoint for local integration checks
   - SignalR hubs for real-time sync
   - ASP.NET Core Identity for authentication/authorization
 
@@ -53,10 +56,44 @@ This starts the Aspire Dashboard where you can monitor all services, logs, trace
 #### 5. **KingmakerKingdomSheet.Shared**
 - **Purpose**: Shared contracts, DTOs, and models
 - **Contains**:
-  - Domain models (Kingdom, Hex, Town, etc.)
   - DTOs for API requests/responses
   - Service contracts and interfaces
 - **Referenced by**: Both API and Web projects for type safety
+
+#### 6. **KingmakerKingdomSheet.Database**
+- **Purpose**: Database-first SQL schema project
+- **Responsibilities**:
+  - Source-controlled schema, constraints, indexes, and reference data
+  - Core domain tables for users, kingdoms, memberships, settlements, hexes, and upgrades
+  - Buildable `.dacpac` output for repeatable deployments
+- **Build**: `dotnet build KingmakerKingdomSheet.Database\KingmakerKingdomSheet.Database.sqlproj`
+
+#### 7. **KingmakerKingdomSheet.Domain**
+- **Purpose**: Backend domain model scaffold
+- **Contains**:
+  - Core backend entities for kingdoms, hexes, towns, and memberships
+  - Enums and value objects that do not depend on EF Core or SQL assets
+- **Referenced by**: Application layer
+
+#### 8. **KingmakerKingdomSheet.Application**
+- **Purpose**: Backend application layer scaffold
+- **Contains**:
+  - Service abstractions for kingdom-focused backend workflows
+  - Preview/in-memory implementations that unblock API composition before SQL integration
+  - Dependency injection registration for ApiService
+- **Referenced by**: ApiService
+
+#### 9. **KingmakerKingdomSheet.Domain.Tests**
+- **Purpose**: Safe unit-test coverage for current domain primitives
+- **Current Focus**:
+  - Value-object formatting and basic record construction contracts
+  - Tests that stay valid before EF Core and SQL-backed persistence arrive
+
+#### 10. **KingmakerKingdomSheet.Application.Tests**
+- **Purpose**: Safe unit-test coverage for application-layer wiring
+- **Current Focus**:
+  - DI registration for preview services
+  - Preview catalog service contracts and DTO mapping shape
 
 ## Getting Started
 
@@ -68,6 +105,12 @@ This starts the Aspire Dashboard where you can monitor all services, logs, trace
 ```bash
 cd dotnet10
 dotnet build KingmakerKingdomSheet.sln
+```
+
+### Run Tests
+```bash
+cd dotnet10
+dotnet test KingmakerKingdomSheet.sln
 ```
 
 ### Run with Aspire Dashboard
@@ -82,6 +125,8 @@ The Aspire Dashboard will launch in your browser. From there you can:
 - Monitor traces and metrics
 - Check health status
 
+The AppHost provisions a local SQLite file at `KingmakerKingdomSheet.AppHost\App_Data\kingmaker-dev.db` and passes its connection string to the API service.
+
 ### Run Individual Projects (Development)
 ```bash
 # API Service
@@ -91,11 +136,16 @@ dotnet run --project KingmakerKingdomSheet.ApiService
 dotnet run --project KingmakerKingdomSheet.Web
 ```
 
+When the API service runs on its own in Development, it bootstraps `KingmakerKingdomSheet.ApiService\kingmaker-dev.local.db` from the SQLite initialization script under `Data\Sqlite\`.
+
 ## Service Dependencies
 
 ```
 AppHost (Orchestration)
   ├─ ApiService (REST API + SignalR)
+  │   ├─ Application
+  │   │   ├─ Domain
+  │   │   └─ Shared
   │   ├─ ServiceDefaults
   │   └─ Shared
   └─ Web (Blazor Frontend)
@@ -104,7 +154,7 @@ AppHost (Orchestration)
       └─ → ApiService (service reference)
 ```
 
-The Web project has a `WaitFor(apiService)` dependency ensuring the API is healthy before the frontend starts.
+The AppHost waits for the SQLite resource before starting the API, and the Web project waits for the API before starting.
 
 ## Health Checks
 
@@ -125,18 +175,17 @@ View all telemetry in the Aspire Dashboard when running via AppHost.
 
 ## Next Steps
 
-1. **Database Setup** (Issue #3): Configure EF Core with SQLite
-2. **Identity** (Issue #4): Implement ASP.NET Core Identity with GM/Player roles
-3. **API Development** (Issue #6): Build Kingdom and Town REST endpoints
-4. **Blazor Components** (Issue #5): Create component library and layout
-5. **Real-time Sync** (Issue #12): Implement SignalR hubs for hex updates
+1. **Identity** (Issue #4): Layer ASP.NET Core Identity and GM/Player/RBAC rules onto the new SQLite-backed foundation
+2. **API Development** (Issue #6): Build kingdom and town REST endpoints on the DbContext-backed application scaffold
+3. **Real-time Sync** (Issue #12): Implement SignalR hubs for hex updates
+4. **Expand automated coverage** (Zoe): Add integration tests for the SQL-backed API and future auth flows
 
 ## Technology Stack
 
 - **.NET 10**: Latest .NET version
 - **Aspire 13**: Cloud-ready orchestration and observability
 - **ASP.NET Core**: Web API and Blazor
-- **Entity Framework Core**: ORM with SQLite
+- **Microsoft.Build.Sql / DacFx**: Database-first schema project and dacpac deployment
 - **SignalR**: Real-time bidirectional communication
 - **OpenTelemetry**: Distributed tracing and metrics
 
