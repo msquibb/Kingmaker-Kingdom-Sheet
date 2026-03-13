@@ -131,6 +131,62 @@ Use `Microsoft.Build.Sql` database project as the canonical schema source under 
 
 ---
 
+### 5. Test Foundation for Database-First Scaffold
+
+**Date**: 2026-03-13  
+**Author**: Zoe  
+**Status**: Implemented  
+
+For the current database-first scaffold state, automated coverage should start with two lightweight unit-test projects:
+
+- `KingmakerKingdomSheet.Domain.Tests` — Domain primitives, immutable record construction, value objects
+- `KingmakerKingdomSheet.Application.Tests` — Application DI registration, preview service contracts, DTO mapping shape
+
+**Rationale**:
+- Matches the database-first/no-migrations architecture already chosen
+- Avoids locking the team into speculative persistence behavior
+- Gives the solution a clean test entry point now without inventing production rules
+
+**Scope**:
+- ✅ Domain primitives and immutable record construction contracts
+- ✅ Application DI registration
+- ✅ Preview/in-memory service contracts and DTO mapping shape
+- ❌ Do **not** add persistence-oriented or endpoint-oriented tests until SQL-backed implementation and API flows are in place
+
+**Follow-up**:
+1. Replace or expand preview-service tests when the real DbContext-backed application services land
+2. Add integration tests for ApiService endpoints after auth and database wiring exist
+
+---
+
+### 6. SQLite Development Integration for the SQL-First Schema
+
+**Date**: 2026-03-13  
+**Author**: Wash  
+**Status**: Implemented  
+
+Local development database support that bridges the SQL Server-style schema into SQLite without modifying Book's SQL-first assets.
+
+**Pattern**:
+- Keep `dotnet10\KingmakerKingdomSheet.Database` as the **only canonical schema source** (SQL Server-style); do not edit Book's SQL assets just to satisfy SQLite development needs
+- For local runtime, use **separate handwritten initialization script** under `KingmakerKingdomSheet.ApiService\Data\Sqlite\`
+- **Flatten SQL schemas into table-name prefixes** (`app_` and `ref_`) for the SQLite development database so EF Core can map cleanly without relying on unsupported SQLite schemas
+- **Keep EF Core migration-free**: Schema changes must continue to flow from SQL project updates first, then matching DbContext/bootstrap-script updates
+
+**Implementation**:
+- AppHost SQLite resource binding: `builder.AddSqlite("kingmaker-dev")`
+- ApiService hand-written DbContext in `Data\KingmakerDbContext.cs` (not scaffolded)
+- Health check endpoints validate database readiness
+- Bootstrap script initializes schema on first run
+
+**Rationale**:
+- Honors the database-first directive and no-migrations constraint
+- SQL project remains canonical; SQLite is a development convenience only
+- Avoids EF Core scaffolding/migration coupling
+- Clean separation of concerns: Book owns schema logic, Wash owns integration layer
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

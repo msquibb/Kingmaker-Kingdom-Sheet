@@ -152,3 +152,49 @@ dotnet run  # Launches Aspire Dashboard at https://localhost:17129
 **User preferences**:
 - Preserve the existing Aspire solution shape and naming conventions while extending it
 - Do not use EF Core migrations; prepare safe scaffolding that can absorb SQL-first schema work later
+
+## Recent Updates
+
+### 2026-03-13: Database Integration Batch Complete
+
+**What was accomplished**:
+- Set up AppHost SQLite resource binding: `builder.AddSqlite("kingmaker-dev")`
+- Created hand-written DbContext in `dotnet10\KingmakerKingdomSheet.ApiService\Data\KingmakerDbContext.cs`
+- Implemented SQLite development database bridge with flattened schema naming (`app_` / `ref_` prefixes)
+- Added bootstrap initialization script for SQLite local dev database
+- Wired AppHost to ApiService with DbContext reference and health checks
+- Verified build succeeds: `dotnet build .\dotnet10\KingmakerKingdomSheet.sln --nologo --verbosity minimal`
+
+**Architecture Decision**:
+- See Decision #6 in `.squad/decisions.md` for full rationale
+- Canonical schema remains in `dotnet10\KingmakerKingdomSheet.Database` (SQL Server-style)
+- SQLite uses flattened naming for development convenience only (no schema concept in SQLite)
+- Migration-free pattern enforced: schema changes flow SQL project → DbContext updates
+
+**Build Status**:
+- ✅ Build succeeds after landing
+- Solution now has 8 projects: AppHost, ServiceDefaults, ApiService, Web, Shared, Domain, Application, **Database**
+
+**Integration Layer**:
+- AppHost orchestrates SQLite provisioning with resource binding
+- ApiService DbContext maps to Book's SQL-first schema
+- Health check endpoints validate database readiness before API launch
+- WaitFor() dependencies ensure correct startup ordering
+
+**Next Actions**:
+1. Book delivers SQL schema assets (tables, stored procedures, seeds)
+2. Wash refines DbContext entity mappings against Book's finalized schema
+3. Replace preview services with real DbContext-backed implementations
+4. Integrate ASP.NET Core Identity (issue #4)
+
+📌 **2026-03-13**: Backend Application Scaffold Complete (Domain and Application layers added)
+📌 **2026-03-07**: Aspire Setup — Issue #2 (5-project structure complete)
+
+## Learnings
+
+### 2026-03-13: SQLite dev-database bridge for the SQL-first backend
+
+- Issue #3 is now wired so AppHost provisions `kingmaker-dev.db` and ApiService can also bootstrap a standalone local SQLite file for development.
+- The SQL Server-first database project remains the canonical schema source; the SQLite dev database uses a flattened `app_` / `ref_` table naming convention plus a hand-authored initialization script instead of EF migrations.
+- `dotnet build` and `dotnet test` should be run with `--tl:off` in this CLI environment to avoid terminal logger hangs and still validate the full solution cleanly.
+- Avoid EF Core scaffolding or migrations; hand-written DbContext keeps code/schema alignment explicit and testable.

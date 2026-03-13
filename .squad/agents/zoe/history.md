@@ -49,6 +49,34 @@
 - Health check endpoints are standard: `/health` (detailed), `/alive` (liveness)
 - Integration tests should validate WaitFor() dependency ordering
 
+## Recent Updates
+
+### 2026-03-13: Test Foundation Batch Complete
+
+**What was accomplished**:
+- Added `dotnet10\KingmakerKingdomSheet.Domain.Tests` for domain entity unit tests
+- Added `dotnet10\KingmakerKingdomSheet.Application.Tests` for application service registration and preview-service tests
+- Tests scoped to contract-level validation only (domain construction, DI shape, DTO mapping)
+- Deferred persistence-oriented and endpoint-oriented tests until DbContext and auth land
+
+**Test Status**:
+- ✅ 6 tests pass, 0 failures
+- Command: `dotnet test .\dotnet10\KingmakerKingdomSheet.sln --nologo --verbosity minimal`
+
+**Architecture Decision**:
+- See Decision #5 in `.squad/decisions.md` for full rationale
+- Tests align with database-first / no-migrations constraint
+- Safe early automation that won't lock team into speculative persistence behavior
+
+**Next Actions**:
+- Replace or expand preview-service tests when real DbContext-backed application services land
+- Add integration tests for ApiService endpoints after auth and database wiring exist
+- SignalR hub connection and broadcast tests with #12 (real-time sync)
+
+📌 **2026-03-07**: Aspire Architecture Pattern implemented (Decision #1)
+📌 **2026-03-06**: Team initialized; 22 todos organized into 5 milestones
+
 ## Learnings
 
-*Will be filled as tests are written*
+- For the database-first scaffold phase, the safest early automation is contract-level unit coverage: value objects, immutable record construction, DI registration, and preview-service DTO mapping.
+- Current meaningful next test targets are the future SQL-backed `IKingdomCatalogService` implementation, ApiService kingdom endpoints, and authorization flows once persistence and auth land.
