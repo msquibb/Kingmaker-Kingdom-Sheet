@@ -187,6 +187,100 @@ Local development database support that bridges the SQL Server-style schema into
 
 ---
 
+### 7. Code Review Responsibility Centralized to Simon
+
+**Date**: 2026-03-14  
+**Author**: Coordinator (Mike Squibb)  
+**Status**: Implemented  
+
+Simon is assigned as the dedicated Code Reviewer responsible for all pull request review, risk assessment, and quality gates.
+
+**Responsibility**:
+- Review implementation changes for bugs, regressions, and architectural drift
+- Check that changes respect team decisions, issue scope, and repository conventions
+- Flag security, data integrity, and maintainability concerns before merge
+- Provide concrete, actionable feedback with clear acceptance criteria
+
+**Rationale**:
+- Centralizes review authority to a single agent, avoiding context fragmentation
+- Allows Mal to focus on scope, priorities, and architectural decisions
+- Simon's charter defines high-signal, meaningful review (substance over style)
+- Supports safer, more predictable PR workflow
+
+**Impact**:
+- All code review requests route to Simon
+- Simon maintains the quality gate; PR approval/rejection is Simon's decision
+- Mal refocuses on product direction and scope management
+
+---
+
+### 8. Workflow Directive: Main-Checkout Shared Team State
+
+**Date**: 2026-03-13  
+**Author**: Mike Squibb  
+**Status**: Active  
+
+Team state is shared across all worktrees using main-checkout mode. The canonical .squad directory lives in the main checkout at `C:/Users/Mike Squibb/source/repos/Kingmaker-Kingdom-Sheet/Kingmaker-Kingdom-Sheet/.squad`.
+
+**Rationale**:
+- Single source of truth for team decisions, history, and agent state across all worktrees
+- Eliminates drift or inconsistencies if multiple worktrees are used concurrently
+- Supports flexible branching and worktree workflows without duplicating team coordination
+
+**Implementation**:
+- All agents read/write to the shared .squad directory
+- Worktree-specific work is isolated to the local workspace; team state is always canonical
+- Commit .squad/ changes before pushing branch or switching worktrees
+
+---
+
+### 9. Workflow Directive: Update PR Descriptions for Accurate Issue Closure
+
+**Date**: 2026-03-13  
+**Author**: Mike Squibb  
+**Status**: Active  
+
+When pushing major changes (especially when work attaches to a new issue not previously linked), update the PR description to ensure GitHub's automation closes all relevant issues on merge.
+
+**Rationale**:
+- Accurate issue closure tracking provides visibility into what work was completed
+- Prevents orphaned issues if scope expansion happens mid-implementation
+- GitHub's issue-linking automation requires explicit links in PR description
+
+**Implementation**:
+- PR description lists all issues covered: `Closes #123`, `Closes #456`, etc.
+- If a new major issue is discovered during implementation, update the PR description immediately
+- Coordinator prompts reviewers to flag scope changes so PR links stay current
+- Use GitHub's native issue linking, not manual closure comments
+
+---
+
+### 10. Workflow Directive: Separate PRs for Major Issue Work Going Forward
+
+**Date**: 2026-03-13  
+**Author**: Mike Squibb  
+**Status**: Active  
+
+Each major issue gets its own pull request. Do not stack multiple major issues onto a single PR.
+
+**Rationale**:
+- Cleaner PR history with tighter scope
+- Simpler review process with fewer moving parts per PR
+- Easier to bisect and troubleshoot if something breaks
+- Aligns with "one issue, one PR" discipline
+
+**Scope Clarification**:
+- "Major issue" = any work tagged with a GitHub issue label that would be independently reviewable
+- Smaller, related tasks **within a single issue** may remain stacked in one PR
+- Coordinator enforces this during issue triage by assigning discrete issues to new branches
+
+**Implementation**:
+- When starting a new major issue, create a new branch and PR
+- Do not append new issues to an existing PR; branch and PR separately
+- If a branch becomes too large, split it into focused sub-branches per issue
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

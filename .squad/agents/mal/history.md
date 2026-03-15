@@ -26,6 +26,16 @@
 
 ## Recent Updates
 
+### 2026-03-15: Code Review Authority Transferred to Simon
+
+**Update**: Simon is now the dedicated Code Reviewer. Mal refocuses on scope, priorities, and architectural decisions.
+- All PR review requests route to Simon (not Mal)
+- Simon maintains the quality gate and PR approval/rejection authority
+- Mal remains available for architectural guidance and product direction (scope & priorities)
+- This change aligns with decision #7 in decisions.md
+
+**Implication for Mal**: Continue to own scope/priorities and architectural decisions. Simon now owns the code quality gate.
+
 ### 2026-03-13: Foundation Batch Completion
 
 **Mal's Contribution**:

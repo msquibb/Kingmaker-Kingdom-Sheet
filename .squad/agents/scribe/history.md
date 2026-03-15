@@ -9,6 +9,15 @@ Agent Scribe initialized and ready for work.
 
 ## Recent Updates
 
+📌 **2026-03-15**: Simon On-Boarded, Workflow Directives Merged
+  - Simon added to team as dedicated Code Reviewer
+  - Team.md and routing.md updated; code review routes to Simon (not Mal)
+  - Three workflow directives merged into decisions.md:
+    - Main-checkout shared team state architecture
+    - PR description updates when issue linkage changes
+    - Separate PRs for major issue work going forward
+  - Inbox files cleared; orchestration and session logs created
+
 📌 **2026-03-13**: Database Integration & Test Foundation Batches Completed
   - Zoe delivered test-foundation projects (Domain.Tests, Application.Tests) — 6 tests pass
   - Wash delivered database-integration wiring (AppHost SQLite binding, DbContext, health checks)
