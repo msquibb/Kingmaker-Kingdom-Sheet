@@ -24,12 +24,55 @@
 - **Approved**: 6-project structure separating concerns cleanly
 - **Noted**: Old-Version exists at `Kingmaker-Kingdom-Sheet/Old-Version/` for domain reference
 
-## Learnings
+## Recent Updates
+
+### 2026-03-15: Code Review Authority Transferred to Simon
+
+**Update**: Simon is now the dedicated Code Reviewer. Mal refocuses on scope, priorities, and architectural decisions.
+- All PR review requests route to Simon (not Mal)
+- Simon maintains the quality gate and PR approval/rejection authority
+- Mal remains available for architectural guidance and product direction (scope & priorities)
+- This change aligns with decision #7 in decisions.md
+
+**Implication for Mal**: Continue to own scope/priorities and architectural decisions. Simon now owns the code quality gate.
+
+### 2026-03-13: Foundation Batch Completion
+
+**Mal's Contribution**:
+- Documented database-first SQL + Aspire pattern (Decision #2)
+- Defined handoff to Book (schema design) and Wash (DbContext + AppHost integration)
+
+**Wash's Contribution**:
+- Scaffolded Domain layer with core entity models
+- Scaffolded Application layer with service contracts and preview implementations
+- Solution now builds with 6 projects (AppHost, ServiceDefaults, ApiService, Web, Shared, Domain, Application)
+- Ready to integrate DbContext after Book delivers schema
+
+**Book's Contribution**:
+- Created SQL Database project with Microsoft.Build.Sql
+- Designed multi-GM schema with app + ref schema split
+- Tables: Kingdom, KingdomParticipant, KingdomParticipantRole, Hex, Settlement, HexUpgrade
+- Solution builds cleanly with 7 projects total
+
+**Next Steps**:
+- Wash to set up DbContext and AppHost database integration using Book's schema
+- Database will be tied to AppHost as a SQLite resource
+
+### Earlier Updates
+📌 **2026-03-07**: Aspire Architecture Pattern implemented (Decision #1)
+📌 **2026-03-06**: Team initialized; 22 todos organized into 5 milestones
+
+- **SQL Database Project (SSDT)** is the canonical schema repository; EF Core DbContext maps to it (no migrations)
+- **AppHost integration**: SQLite resource added via `AddSqlite()`, bound to ApiService with `WithReference()`
+- **Multi-GM pattern**: `KingdomGms` junction table with role column (`owner|editor|viewer`) enables flexible ownership
+- **Development seeding**: Stored scripts in Database/Scripts/, initialized at AppHost startup
+- **Hand-written DbContext**: Not scaffolded; explicit entity mappings maintain code/schema alignment
 
 ### Project Structure
 - Old Blazor WebAssembly project: `Kingmaker-Kingdom-Sheet/Old-Version/` (Client/Server/Shared pattern)
 - New .NET 10 work will live in `dotnet10/` directory
-- `dotnet10/` currently empty - greenfield start
+- `dotnet10/` currently scaffolded (5 projects): AppHost, ServiceDefaults, ApiService, Web, Shared
+- Database project will be added alongside existing 5; all under `dotnet10/`
 
 ### Priority Recommendations
 1. Foundation first: aspire-setup → solution-structure → domain-models
