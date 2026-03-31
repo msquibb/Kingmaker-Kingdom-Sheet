@@ -379,3 +379,15 @@ VALUES
     (11, 1), (11, 2),
     (12, 1)
 ON CONFLICT (KingdomRoleTypeId, KingdomPermissionTypeId) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS app_LocalCredential
+(
+    UserAccountId TEXT NOT NULL PRIMARY KEY,
+    PasswordHash TEXT NOT NULL,
+    FailedLoginAttempts INTEGER NOT NULL DEFAULT 0,
+    LockoutEndUtc TEXT NULL,
+    LastLoginUtc TEXT NULL,
+    CreatedUtc TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ModifiedUtc TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_app_LocalCredential_UserAccount FOREIGN KEY (UserAccountId) REFERENCES app_UserAccount (UserAccountId)
+);

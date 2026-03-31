@@ -1,0 +1,192 @@
+@page "/kingdoms/{id:guid}"
+@inject KingdomApiClient ApiClient
+@inject NavigationManager Navigation
+@attribute [StreamRendering]
+
+<PageTitle>@(kingdom?.Name ?? "Kingdom Details") - Kingmaker Kingdom Sheet</PageTitle>
+
+<div class="container-fluid mt-4">
+    @if (kingdom == null)
+    {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading kingdom details...</p>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1>@kingdom.Name</h1>
+                <p class="text-muted mb-0">Level @kingdom.Level • Size @kingdom.Size</p>
+            </div>
+            <a href="/kingdoms" class="btn btn-outline-secondary">
+                <span class="bi bi-arrow-left"></span> Back to Kingdoms
+            </a>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
+                    Overview
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#members" type="button" role="tab">
+                    Members (@kingdom.Members.Count)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#settlements" type="button" role="tab">
+                    Settlements (@kingdom.Towns.Count)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#map" type="button" role="tab">
+                    Map (@kingdom.Hexes.Count hexes)
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Kingdom Statistics</h5>
+                            </div>
+                            <div class="card-body">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4">Level</dt>
+                                    <dd class="col-sm-8">@kingdom.Level</dd>
+
+                                    <dt class="col-sm-4">Size</dt>
+                                    <dd class="col-sm-8">@kingdom.Size</dd>
+
+                                    <dt class="col-sm-4">Total Hexes</dt>
+                                    <dd class="col-sm-8">@kingdom.Hexes.Count</dd>
+
+                                    <dt class="col-sm-4">Settlements</dt>
+                                    <dd class="col-sm-8">@kingdom.Towns.Count</dd>
+
+                                    <dt class="col-sm-4">Members</dt>
+                                    <dd class="col-sm-8">@kingdom.Members.Count</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="members" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Kingdom Members</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (kingdom.Members.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Role</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var member in kingdom.Members)
+                                        {
+                                            <tr>
+                                                <td>@member.DisplayName</td>
+                                                <td>@member.Role</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">No members assigned yet.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="settlements" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Settlements</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (kingdom.Towns.Any())
+                        {
+                            <div class="row g-3">
+                                @foreach (var town in kingdom.Towns)
+                                {
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">@town.Name</h6>
+                                                <p class="card-text text-muted mb-0">
+                                                    <small>Location: (@town.Column, @town.Row) • Population: @town.Population</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">No settlements founded yet.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="map" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Kingdom Map</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <p class="mb-0">
+                                <strong>Map visualization coming soon!</strong> 
+                                The kingdom controls @kingdom.Hexes.Count hexes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private KingdomDetailsDto? kingdom;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            kingdom = await ApiClient.GetKingdomAsync(Id);
+            if (kingdom == null)
+            {
+                Navigation.NavigateTo("/kingdoms");
+            }
+        }
+        catch (Exception)
+        {
+            Navigation.NavigateTo("/kingdoms");
+        }
+    }
+}
