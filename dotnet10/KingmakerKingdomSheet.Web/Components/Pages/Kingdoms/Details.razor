@@ -1,0 +1,84 @@
+@page "/kingdoms/{Id:guid}"
+@rendermode InteractiveWebAssembly
+@inject KingdomApiClient KingdomClient
+@inject NavigationManager Navigation
+
+<div class="container">
+    @if (kingdom == null)
+    {
+        <p><em>Loading kingdom details...</em></p>
+    }
+    else
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <h1>@kingdom.Name</h1>
+                <a href="/kingdoms" class="btn btn-secondary">Back to Kingdoms</a>
+                <a href="/kingdoms/@kingdom.Id/edit" class="btn btn-primary">Edit</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5>Kingdom Overview</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>ID:</strong> @kingdom.Id</p>
+                        <p><strong>Claimed Hexes:</strong> @kingdom.Hexes.Count</p>
+                        <p><strong>Town Count:</strong> @kingdom.Towns.Count</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (kingdom.Towns != null && kingdom.Towns.Count > 0)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Towns</h5>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var town in kingdom.Towns)
+                                    {
+                                        <tr>
+                                            <td>@town.Name</td>
+                                            <td>(@town.Column, @town.Row)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">No towns in this kingdom yet.</div>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private KingdomDetailsDto? kingdom;
+
+    protected override async Task OnInitializedAsync()
+    {
+        kingdom = await KingdomClient.GetKingdomAsync(Id);
+    }
+}

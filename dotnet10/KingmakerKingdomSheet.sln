@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingmakerKingdomSheet.Domai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingmakerKingdomSheet.Application.Tests", "KingmakerKingdomSheet.Application.Tests\KingmakerKingdomSheet.Application.Tests.csproj", "{56D451FD-8B38-4757-810A-D97F8C6E91D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KingmakerKingdomSheet.Web.Client", "KingmakerKingdomSheet.Web.Client\KingmakerKingdomSheet.Web.Client.csproj", "{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,18 @@ Global
 		{56D451FD-8B38-4757-810A-D97F8C6E91D3}.Release|x64.Build.0 = Release|Any CPU
 		{56D451FD-8B38-4757-810A-D97F8C6E91D3}.Release|x86.ActiveCfg = Release|Any CPU
 		{56D451FD-8B38-4757-810A-D97F8C6E91D3}.Release|x86.Build.0 = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Debug|x86.Build.0 = Debug|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|x64.Build.0 = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1FDBD4F1-DDDE-4F49-BA02-1E938D4062AE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

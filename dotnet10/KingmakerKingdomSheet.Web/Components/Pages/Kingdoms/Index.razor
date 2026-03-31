@@ -1,0 +1,51 @@
+@page "/kingdoms"
+@rendermode InteractiveWebAssembly
+@inject KingdomApiClient KingdomClient
+@inject NavigationManager Navigation
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1>Kingdoms</h1>
+            <a href="/kingdoms/new" class="btn btn-primary">Create Kingdom</a>
+        </div>
+    </div>
+
+    @if (kingdoms == null)
+    {
+        <p><em>Loading kingdoms...</em></p>
+    }
+    else if (kingdoms.Count == 0)
+    {
+        <div class="alert alert-info">No kingdoms found. <a href="/kingdoms/new">Create one now</a>!</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var kingdom in kingdoms)
+            {
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@kingdom.Name</h5>
+                            <p class="card-text">
+                                <strong>Claimed Hexes:</strong> @kingdom.ClaimedHexCount<br />
+                                <strong>Towns:</strong> @kingdom.TownCount
+                            </p>
+                            <a href="/kingdoms/@kingdom.Id" class="btn btn-sm btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<KingdomSummaryDto>? kingdoms;
+
+    protected override async Task OnInitializedAsync()
+    {
+        kingdoms = await KingdomClient.GetKingdomsAsync();
+    }
+}

@@ -1,7 +1,57 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<div class="hero-section text-center py-5">
+    <h1 class="display-3 fw-bold mb-4">Kingmaker Kingdom Sheet</h1>
+    <p class="lead mb-4">Manage and track your Pathfinder Kingmaker campaign kingdoms with ease.</p>
+    
+    <div class="row justify-content-center gap-3">
+        <div class="col-auto">
+            <a href="/kingdoms" class="btn btn-primary btn-lg">View Kingdoms</a>
+        </div>
+        <div class="col-auto">
+            <a href="/login" class="btn btn-outline-primary btn-lg">Login</a>
+        </div>
+    </div>
+</div>
 
-<h1>Hello, world!</h1>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📊 Track Kingdoms</h5>
+                    <p class="card-text">Create and manage multiple kingdoms with comprehensive tracking of territories and settlements.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">🏘️ Manage Towns</h5>
+                    <p class="card-text">Organize and control towns within your kingdoms, tracking their development and status.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">📋 Record Details</h5>
+                    <p class="card-text">Keep detailed records of hexes, resources, and other kingdom information in one place.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-Welcome to your new app.
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 10px;
+        margin-top: 2rem;
+    }
+    
+    .hero-section h1 {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+</style>
