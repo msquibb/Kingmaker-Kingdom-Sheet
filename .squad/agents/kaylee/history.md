@@ -42,6 +42,14 @@
 - #15: Implement responsive design and mobile support (M5)
 - #16: Add comprehensive error handling and user feedback (M5, shared with Wash)
 
+## Architecture Decisions Affecting Kaylee
+
+**Aspire Architecture Pattern** (Wash, 2026-03-07):
+- ServiceDefaults pattern must be used in all services
+- Web project must call `builder.AddServiceDefaults()` in Program.cs
+- Health checks endpoints (`/health`, `/alive`) are standard
+- WaitFor(apiService) ensures Web doesn't start until API is healthy
+
 ## Learnings
 
 *Will be filled as components are built*

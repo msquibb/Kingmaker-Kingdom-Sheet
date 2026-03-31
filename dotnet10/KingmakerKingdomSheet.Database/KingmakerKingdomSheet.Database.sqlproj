@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="2.1.0" />
+  <PropertyGroup>
+    <Name>KingmakerKingdomSheet.Database</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+    <ProjectGuid>834DCE6A-C685-420A-99A7-5E26AB9B3A93</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeployment\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Remove="PostDeployment\Script.PostDeployment.sql" />
+    <None Include="PostDeployment\Script.PostDeployment.sql" />
+    <Build Remove="PostDeployment\Seeds\ReferenceData.sql" />
+    <None Include="PostDeployment\Seeds\ReferenceData.sql" />
+  </ItemGroup>
+</Project>
