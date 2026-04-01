@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="KingmakerKingdomSheet.Application.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\KingmakerKingdomSheet.ServiceDefaults\KingmakerKingdomSheet.ServiceDefaults.csproj" />
     <ProjectReference Include="..\KingmakerKingdomSheet.Shared\KingmakerKingdomSheet.Shared.csproj" />
     <ProjectReference Include="..\KingmakerKingdomSheet.Application\KingmakerKingdomSheet.Application.csproj" />
