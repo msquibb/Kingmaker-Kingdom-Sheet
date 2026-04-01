@@ -1,8 +1,13 @@
+using KingmakerKingdomSheet.ApiService.Auth;
 using KingmakerKingdomSheet.ApiService.Data;
 using KingmakerKingdomSheet.ApiService.Services;
 using KingmakerKingdomSheet.Application.Contracts;
+using KingmakerKingdomSheet.Shared.DTOs;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,9 +39,26 @@ builder.Services.AddDbContext<KingmakerDbContext>((serviceProvider, options) =>
 });
 
 builder.Services.AddScoped<IKingdomCatalogService, SqliteKingdomCatalogService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IKingdomAuthorizationService, KingdomAuthorizationService>();
 builder.Services.AddSingleton<SqliteDevelopmentDatabaseInitializer>();
 builder.Services.AddHealthChecks()
     .AddCheck<KingmakerDatabaseHealthCheck>("kingmaker-database");
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/api/auth/login";
+        options.Cookie.Name = "KingmakerAuth";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Events.OnRedirectToLogin = context =>
+        {
+            context.Response.StatusCode = 401;
+            return Task.CompletedTask;
+        };
+    });
+builder.Services.AddAuthorization();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -45,6 +67,9 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
@@ -98,6 +123,81 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapPost("/api/auth/register", async (RegisterRequestDto dto, IAuthService authService, HttpContext httpContext) =>
+{
+    var request = new RegisterRequest(dto.DisplayName, dto.Email, dto.Password);
+    var result = await authService.RegisterAsync(request);
+
+    if (!result.Succeeded)
+        return Results.BadRequest(new { error = result.Error });
+
+    var claims = new List<Claim>
+    {
+        new(ClaimTypes.NameIdentifier, result.UserAccountId!.Value.ToString()),
+        new(ClaimTypes.Email, dto.Email),
+        new(ClaimTypes.Name, dto.DisplayName)
+    };
+
+    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    var principal = new ClaimsPrincipal(identity);
+
+    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+    return Results.Ok(new { userAccountId = result.UserAccountId });
+});
+
+app.MapPost("/api/auth/login", async (LoginRequestDto dto, IAuthService authService, HttpContext httpContext) =>
+{
+    var request = new LoginRequest(dto.Email, dto.Password);
+    var result = await authService.LoginAsync(request);
+
+    if (!result.Succeeded)
+        return Results.BadRequest(new { error = result.Error });
+
+    var userInfo = await authService.GetCurrentUserAsync(result.UserAccountId!.Value);
+    if (userInfo == null)
+        return Results.BadRequest(new { error = "User not found." });
+
+    var claims = new List<Claim>
+    {
+        new(ClaimTypes.NameIdentifier, userInfo.UserAccountId.ToString()),
+        new(ClaimTypes.Email, userInfo.Email),
+        new(ClaimTypes.Name, userInfo.DisplayName)
+    };
+
+    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    var principal = new ClaimsPrincipal(identity);
+
+    await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+    return Results.Ok(new { userAccountId = userInfo.UserAccountId });
+});
+
+app.MapPost("/api/auth/logout", async (HttpContext httpContext) =>
+{
+    await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    return Results.Ok();
+});
+
+app.MapGet("/api/auth/me", async (HttpContext httpContext, IAuthService authService) =>
+{
+    var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+    if (userIdClaim == null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        return Results.Unauthorized();
+
+    var userInfo = await authService.GetCurrentUserAsync(userId);
+    if (userInfo == null)
+        return Results.Unauthorized();
+
+    var dto = new UserInfoDto(
+        userInfo.UserAccountId,
+        userInfo.DisplayName,
+        userInfo.Email,
+        userInfo.SystemClaims);
+
+    return Results.Ok(dto);
+}).RequireAuthorization();
 
 app.MapDefaultEndpoints();
 

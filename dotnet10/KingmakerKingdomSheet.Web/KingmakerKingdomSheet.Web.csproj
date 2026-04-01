@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\KingmakerKingdomSheet.ServiceDefaults\KingmakerKingdomSheet.ServiceDefaults.csproj" />
     <ProjectReference Include="..\KingmakerKingdomSheet.Shared\KingmakerKingdomSheet.Shared.csproj" />
+    <ProjectReference Include="..\KingmakerKingdomSheet.Web.Client\KingmakerKingdomSheet.Web.Client.csproj" />
   </ItemGroup>
 
 </Project>

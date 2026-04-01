@@ -12,6 +12,7 @@ public sealed class UserAccount
     public DateTime CreatedUtc { get; set; }
     public DateTime ModifiedUtc { get; set; }
     public long RowVersion { get; set; }
+    public LocalCredential? LocalCredential { get; set; }
     public ICollection<Kingdom> CreatedKingdoms { get; } = new List<Kingdom>();
     public ICollection<KingdomParticipant> KingdomParticipants { get; } = new List<KingdomParticipant>();
 }
@@ -209,4 +210,16 @@ public sealed class KingdomRoleDefaultPermission
     public short KingdomPermissionTypeId { get; set; }
     public KingdomRoleType RoleType { get; set; } = null!;
     public KingdomPermissionType PermissionType { get; set; } = null!;
+}
+
+public sealed class LocalCredential
+{
+    public Guid UserAccountId { get; set; }
+    public string PasswordHash { get; set; } = string.Empty;
+    public int FailedLoginAttempts { get; set; }
+    public DateTime? LockoutEndUtc { get; set; }
+    public DateTime? LastLoginUtc { get; set; }
+    public DateTime CreatedUtc { get; set; }
+    public DateTime ModifiedUtc { get; set; }
+    public UserAccount UserAccount { get; set; } = null!;
 }

@@ -1,0 +1,117 @@
+@page "/auth/register"
+
+<PageTitle>Register - Kingmaker Kingdom Sheet</PageTitle>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4">Create Account</h2>
+                    
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            @errorMessage
+                        </div>
+                    }
+
+                    <EditForm Model="registerModel" OnValidSubmit="HandleRegisterAsync" FormName="register">
+                        <DataAnnotationsValidator />
+                        
+                        <div class="mb-3">
+                            <label for="displayName" class="form-label">Display Name</label>
+                            <InputText id="displayName" @bind-Value="registerModel.DisplayName" class="form-control" placeholder="Your name" />
+                            <ValidationMessage For="() => registerModel.DisplayName" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <InputText id="email" @bind-Value="registerModel.Email" class="form-control" placeholder="your@email.com" />
+                            <ValidationMessage For="() => registerModel.Email" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <InputText id="password" type="password" @bind-Value="registerModel.Password" class="form-control" placeholder="Choose a strong password" />
+                            <ValidationMessage For="() => registerModel.Password" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <InputText id="confirmPassword" type="password" @bind-Value="registerModel.ConfirmPassword" class="form-control" placeholder="Re-enter your password" />
+                            <ValidationMessage For="() => registerModel.ConfirmPassword" />
+                        </div>
+
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-success btn-lg" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span>Creating account...</span>
+                                }
+                                else
+                                {
+                                    <span>Create Account</span>
+                                }
+                            </button>
+                        </div>
+                    </EditForm>
+
+                    <hr />
+
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? <a href="/auth/login">Login here</a></p>
+                    </div>
+
+                    <div class="alert alert-warning mt-3" role="alert">
+                        <small><strong>Note:</strong> Authentication is not yet implemented. This is a placeholder page.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private RegisterModel registerModel { get; set; } = new();
+
+    private string? errorMessage;
+    private bool isLoading;
+
+    private async Task HandleRegisterAsync()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        try
+        {
+            if (registerModel.Password != registerModel.ConfirmPassword)
+            {
+                errorMessage = "Passwords do not match.";
+                return;
+            }
+
+            // TODO: Implement actual registration when backend is ready
+            await Task.Delay(500); // Simulate API call
+            errorMessage = "Authentication backend is not yet implemented.";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Registration failed: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    public class RegisterModel
+    {
+        public string DisplayName { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string ConfirmPassword { get; set; } = "";
+    }
+}

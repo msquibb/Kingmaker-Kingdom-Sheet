@@ -5,6 +5,7 @@ namespace KingmakerKingdomSheet.ApiService.Data;
 public sealed class KingmakerDbContext(DbContextOptions<KingmakerDbContext> options) : DbContext(options)
 {
     public DbSet<UserAccount> UserAccounts => Set<UserAccount>();
+    public DbSet<LocalCredential> LocalCredentials => Set<LocalCredential>();
     public DbSet<Kingdom> Kingdoms => Set<Kingdom>();
     public DbSet<KingdomParticipant> KingdomParticipants => Set<KingdomParticipant>();
     public DbSet<KingdomParticipantRole> KingdomParticipantRoles => Set<KingdomParticipantRole>();
@@ -36,6 +37,16 @@ public sealed class KingmakerDbContext(DbContextOptions<KingmakerDbContext> opti
             entity.HasMany(item => item.CreatedKingdoms)
                 .WithOne(item => item.CreatedByUserAccount)
                 .HasForeignKey(item => item.CreatedByUserAccountId);
+            entity.HasOne(item => item.LocalCredential)
+                .WithOne(item => item.UserAccount)
+                .HasForeignKey<LocalCredential>(item => item.UserAccountId);
+        });
+
+        modelBuilder.Entity<LocalCredential>(entity =>
+        {
+            entity.ToTable("app_LocalCredential");
+            entity.HasKey(item => item.UserAccountId);
+            entity.Property(item => item.PasswordHash).HasMaxLength(200);
         });
 
         modelBuilder.Entity<Kingdom>(entity =>
@@ -295,6 +306,13 @@ public sealed class KingmakerDbContext(DbContextOptions<KingmakerDbContext> opti
 
                 case KingdomParticipantPermission participantPermission when entry.State == EntityState.Added && participantPermission.AssignedUtc == default:
                     participantPermission.AssignedUtc = utcNow;
+                    break;
+
+                case LocalCredential localCredential:
+                    localCredential.ModifiedUtc = utcNow;
+                    localCredential.CreatedUtc = entry.State == EntityState.Added && localCredential.CreatedUtc == default
+                        ? utcNow
+                        : localCredential.CreatedUtc;
                     break;
             }
         }
