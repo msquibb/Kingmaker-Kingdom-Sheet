@@ -1,5 +1,6 @@
 using KingmakerKingdomSheet.ApiService.Auth;
 using KingmakerKingdomSheet.ApiService.Data;
+using KingmakerKingdomSheet.ApiService.Endpoints;
 using KingmakerKingdomSheet.ApiService.Services;
 using KingmakerKingdomSheet.Application.Contracts;
 using KingmakerKingdomSheet.Shared.DTOs;
@@ -39,6 +40,8 @@ builder.Services.AddDbContext<KingmakerDbContext>((serviceProvider, options) =>
 });
 
 builder.Services.AddScoped<IKingdomCatalogService, SqliteKingdomCatalogService>();
+builder.Services.AddScoped<IKingdomManagementService, SqliteKingdomManagementService>();
+builder.Services.AddScoped<ISettlementService, SqliteSettlementService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IKingdomAuthorizationService, KingdomAuthorizationService>();
 builder.Services.AddSingleton<SqliteDevelopmentDatabaseInitializer>();
@@ -82,9 +85,7 @@ await using (var scope = app.Services.CreateAsyncScope())
     await databaseInitializer.InitializeAsync();
 }
 
-string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-app.MapGet("/", () => "API service is running. Navigate to /database/status to verify the SQLite development database or /weatherforecast to see sample data.");
+app.MapGet("/", () => "API service is running. Navigate to /database/status to verify the SQLite development database.");
 
 app.MapGet("/database/status", async (KingmakerDbContext dbContext, CancellationToken cancellationToken) =>
 {
@@ -110,19 +111,8 @@ app.MapGet("/database/status", async (KingmakerDbContext dbContext, Cancellation
     });
 });
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.MapKingdomEndpoints();
+app.MapSettlementEndpoints();
 
 app.MapPost("/api/auth/register", async (RegisterRequestDto dto, IAuthService authService, HttpContext httpContext) =>
 {
@@ -202,8 +192,3 @@ app.MapGet("/api/auth/me", async (HttpContext httpContext, IAuthService authServ
 app.MapDefaultEndpoints();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
